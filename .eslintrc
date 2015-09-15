@@ -29,10 +29,6 @@
       2,
       "nofunc"
     ],
-    "one-var": [
-      2,
-      "never"
-    ],
     "quote-props": [
       2,
       "as-needed"
