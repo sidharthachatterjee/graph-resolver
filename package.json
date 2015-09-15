@@ -1,0 +1,39 @@
+{
+  "name": "graph-resolver",
+  "version": "0.0.0",
+  "description": "Graph Resolver resolves a value or a list of values of a model to another, provided their intermediaries have defined relationships.",
+  "homepage": "",
+  "repository": "siddharthkchatterjee/graph-resolver",
+  "author": {
+    "name": "Sidhartha Chatterjee",
+    "email": "siddharthkchatterjee@gmail.com",
+    "url": ""
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "keywords": [
+    "graph",
+    "resolver",
+    "dependency"
+  ],
+  "devDependencies": {
+    "gulp": "^3.6.0",
+    "gulp-eslint": "^1.0.0",
+    "gulp-exclude-gitignore": "^1.0.0",
+    "gulp-istanbul": "^0.9.0",
+    "gulp-mocha": "^2.0.0",
+    "gulp-plumber": "^1.0.0",
+    "gulp-nsp": "^0.4.5",
+    "gulp-coveralls": "^0.1.0",
+    "gulp-babel": "^5.1.0",
+    "babel-core": "^5.5.0",
+    "isparta": "^3.0.3"
+  },
+  "scripts": {
+    "prepublish": "gulp prepublish",
+    "test": "gulp"
+  },
+  "license": "MIT"
+}
