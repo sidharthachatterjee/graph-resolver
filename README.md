@@ -28,5 +28,5 @@ MIT © [Sidhartha Chatterjee]()
 [travis-url]: https://travis-ci.org/siddharthkchatterjee/graph-resolver
 [daviddm-image]: https://david-dm.org/siddharthkchatterjee/graph-resolver.svg?theme=shields.io
 [daviddm-url]: https://david-dm.org/siddharthkchatterjee/graph-resolver
-[coveralls-image]: https://coveralls.io/repos/siddharthkchatterjee/graph-resolver/badge.svg
-[coveralls-url]: https://coveralls.io/r/siddharthkchatterjee/graph-resolver
+[coveralls-image]: https://coveralls.io/repos/siddharthkchatterjee/graph-resolver/badge.svg?branch=master&service=github
+[coveralls-url]: https://coveralls.io/github/siddharthkchatterjee/graph-resolver?branch=master
