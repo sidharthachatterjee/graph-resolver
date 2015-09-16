@@ -7,7 +7,7 @@ chai.use(sinonChai);
 import Resolver from '../lib';
 import {Graph} from 'graphlib';
 import {ensureArray, chainThenables} from '../lib/utilities';
-import {setupGraph, getPath} from '../lib/graph';
+// import {setupGraph, getPath} from '../lib/graph';
 
 describe('Resolver', function () {
   it('has the resolve function in its prototype', function () {
@@ -24,8 +24,8 @@ describe('Resolver', function () {
       to: 'Event',
       method: input => input + 1
     }];
-  	let resolver = new Resolver(relationships);
-  	expect(resolver).to.have.property('graph');
+    let resolver = new Resolver(relationships);
+    expect(resolver).to.have.property('graph');
     expect(resolver.graph).to.be.an.instanceof(Graph);
   });
 });
@@ -67,7 +67,6 @@ describe('Utilities', function () {
       let resultPromise = chainThenables([firstThenable, secondThenable], data);
       resultPromise.then(function () {
         expect(firstThenable).to.have.been.calledWith(data);
-        expect(firstThenable).to.have.been.calledOnce;
         expect(secondThenable.firstCall).to.have.been.calledWith('Birthday Party');
         expect(secondThenable.secondCall).to.have.been.calledWith('Funeral');
         done();
