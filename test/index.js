@@ -39,9 +39,9 @@ describe('Resolver', function () {
   });
   describe('resolve', function () {
     it('returns a Promise that resolves to an array of values');
-    it('rejects with an Error if not passed a source, destination or seed value');
-    it('rejects with an Error source or destination are not strings');
-    it('rejects with an Error if source or destination are not nodes in the graph');
+    // it('rejects with an Error if not passed a source, destination or seed value');
+    // it('rejects with an Error source or destination are not strings');
+    // it('rejects with an Error if source or destination are not nodes in the graph');
   });
 });
 
@@ -104,8 +104,8 @@ describe('Utilities', function () {
         done();
       });
     });
-    it('throws an Error if passed undefined or an empty array');
-    it('throws an Error if passed array contains anything but functions');
+    // it('throws an Error if passed undefined or an empty array');
+    // it('throws an Error if passed array contains anything but functions');
   });
 });
 
@@ -125,9 +125,9 @@ describe('Graph', function () {
       expect(graph.edgeCount()).to.equal(2);
       expect(graph.edges().map(_.ary(graph.edge, 1), graph)).to.include.members([getEventsForBrand, getItemsForEvent]);
     });
-    it('throws an Error if passed an empty array');
-    it('throws an Error if passed undefined');
-    it('throws an Error if passed null');
+    // it('throws an Error if passed an empty array');
+    // it('throws an Error if passed undefined');
+    // it('throws an Error if passed null');
   });
   describe('getPath', function () {
     it('returns a correctly ordered array of functions for a source and destination', function () {
