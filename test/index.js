@@ -12,7 +12,7 @@ chai.use(sinonChai);
 import Resolver from '../lib';
 import {Graph} from 'graphlib';
 import {ensureArray, chainThenables} from '../lib/utilities';
-import {setupGraph} from '../lib/graph';
+import {setupGraph, getPath} from '../lib/graph';
 
 const getItemsForEvent = input => input,
   getEventsForBrand = input => input;
@@ -38,9 +38,7 @@ describe('Resolver', function () {
     expect(resolver.graph).to.be.an.instanceof(Graph);
   });
   describe('resolve', function () {
-    it('works with a single value as a seed');
-    it('works with an array of values as a seed');
-    it('returns a Promise that resolves to a flat array of values (ObjectIds for now)');
+    it('returns a Promise that resolves to an array of values');
     it('rejects with an Error if not passed a source, destination or seed value');
     it('rejects with an Error source or destination are not strings');
     it('rejects with an Error if source or destination are not nodes in the graph');
@@ -67,7 +65,9 @@ describe('Utilities', function () {
     });
   });
   describe('chainThenables', function () {
-    it('calls the first function in the chain with the correct seed', function (done) {
+    it('works with a single value');
+    it('works with an array of values');
+    it('calls the first function in the chain with the correct data', function (done) {
       let thenable = sinon.spy(),
         data = 'John Doe';
       let resultPromise = chainThenables([thenable], data);
@@ -89,7 +89,7 @@ describe('Utilities', function () {
         done();
       });
     });
-    it('returns the result as a flattened array', function (done) {
+    it('returns the result as a flat array', function (done) {
       let firstThenable = sinon.stub(),
         secondThenable = sinon.stub(),
         data = 'John Doe';
@@ -130,9 +130,33 @@ describe('Graph', function () {
     it('throws an Error if passed null');
   });
   describe('getPath', function () {
-    it('pushes the right edge into the path array');
-    it('returns when source and predecessor are equal');
-    it('returns the path in the correct order');
-    it('calls itself recursively if source and predecessor are not equal');
+    it('returns a correctly ordered array of functions for a source and destination', function () {
+      let graph = setupGraph(relationships);
+      let path = getPath(graph, 'Brand', 'Item', []);
+      expect(path).to.have.length(2);
+      expect(path).to.include.members([getEventsForBrand, getItemsForEvent]);
+      expect(path[0]).to.equal(getEventsForBrand);
+      expect(path[1]).to.equal(getItemsForEvent);
+    });
+    it('returns an empty array when source and destination are equal', function () {
+      let graph = setupGraph(relationships);
+      let path = getPath(graph, 'Brand', 'Brand', []);
+      expect(path).to.be.an('array');
+      expect(path).to.have.length(0);
+    });
+    it('returns undefined if no graph is passed', function () {
+      let path = getPath(undefined, 'Brand', 'Event', []);
+      expect(path).to.equal(undefined);
+    });
+    it('returns undefined if no source is passed', function () {
+      let graph = setupGraph(relationships);
+      let path = getPath(graph, undefined, 'Event', []);
+      expect(path).to.equal(undefined);
+    });
+    it('returns undefined if no destination is passed', function () {
+      let graph = setupGraph(relationships);
+      let path = getPath(graph, 'Brand', undefined, []);
+      expect(path).to.equal(undefined);
+    });
   });
 });
