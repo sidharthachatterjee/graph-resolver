@@ -1,6 +1,6 @@
 {
   "name": "graph-resolver",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "Graph Resolver resolves a value or a list of values of a model to another, provided their intermediaries have defined relationships.",
   "homepage": "",
   "repository": "siddharthkchatterjee/graph-resolver",
