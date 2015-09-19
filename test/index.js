@@ -5,17 +5,19 @@ import chai from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 chai.should();
+import chaiAsPromised from 'chai-as-promised';
 let expect = chai.expect;
 let assert = chai.assert;
 chai.use(sinonChai);
+chai.use(chaiAsPromised);
 
 import Resolver from '../lib';
 import { Graph } from 'graphlib';
 import { ensureArray, chainThenables } from '../lib/utilities';
 import { setupGraph, getPath } from '../lib/graph';
 
-const getItemsForEvent = input => input,
-	getEventsForBrand = input => input;
+const getItemsForEvent = input => Promise.resolve([input]),
+	getEventsForBrand = input => Promise.resolve([input]);
 
 const relationships = [{
 	from: 'Event',
@@ -38,7 +40,10 @@ describe('Resolver', function () {
 		expect(resolver.graph).to.be.an.instanceof(Graph);
 	});
 	describe('resolve', function () {
-		it('returns a Promise that resolves to an array of values');
+		it('returns a Promise that resolves to an array of values', function () {
+			let resolver = new Resolver(relationships);
+			return resolver.resolve('sample', 'Brand', 'Item').should.eventually.deep.equal(['sample']);
+		});
 		// it('rejects with an Error if not passed a source, destination or seed value');
 		// it('rejects with an Error source or destination are not strings');
 		// it('rejects with an Error if source or destination are not nodes in the graph');
