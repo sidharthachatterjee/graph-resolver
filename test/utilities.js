@@ -9,6 +9,21 @@ chai.use(chaiAsPromised);
 
 import { ensureArray, chainThenables } from '../lib/utilities';
 
+let countries = {
+	India: ['West Bengal', 'Assam'],
+	'United States of America': ['Pennsylvania', 'Texas']
+};
+
+let states = {
+	'West Bengal': ['Siliguri', 'Kolkata'],
+	Assam: ['Guwahati', 'Tezpur'],
+	Pennsylvania: ['Philadelphia', 'Pittsburgh'],
+	Texas: ['Dallas', 'Fort Worth']
+};
+
+let getStatesForCountry = (country) => Promise.resolve(countries[country]),
+	getCitiesForState = (state) => Promise.resolve(states[state]);
+
 describe('Utilities', function () {
 	describe('ensureArray', function () {
 		it('returns an array when passed a single value', function () {
@@ -29,8 +44,14 @@ describe('Utilities', function () {
 		});
 	});
 	describe('chainThenables', function () {
-		it('works with a single value');
-		it('works with an array of values');
+		it('works with a single value', function () {
+			return chainThenables([getStatesForCountry, getCitiesForState], 'India')
+				.should.eventually.deep.equal(['Siliguri', 'Kolkata', 'Guwahati', 'Tezpur']);
+		});
+		it('works with an array of values', function () {
+			return chainThenables([getStatesForCountry, getCitiesForState], ['India', 'United States of America'])
+				.should.eventually.deep.equal(['Siliguri', 'Kolkata', 'Guwahati', 'Tezpur', 'Philadelphia', 'Pittsburgh', 'Dallas', 'Fort Worth']);
+		});
 		it('calls the first function in the chain with the correct data', function (done) {
 			let thenable = sinon.spy(),
 				data = 'John Doe';
@@ -40,7 +61,32 @@ describe('Utilities', function () {
 				done();
 			});
 		});
-		it('calls a function with [] if a preceding thenable resolves with undefined or null');
+		it('continues gracefully if a thenable resolves with undefined', function (done) {
+			let firstThenable = sinon.stub(),
+				secondThenable = sinon.stub(),
+				data = ['John Doe', 'Jane Doe'];
+			firstThenable.onFirstCall().returns(undefined);
+			firstThenable.onSecondCall().returns('Birthday Party');
+			secondThenable.returns('Cheesecake');
+			let resultPromise = chainThenables([firstThenable, secondThenable], data);
+			resultPromise.then(function (result) {
+				expect(result).to.deep.equal(['Cheesecake']);
+				done();
+			});
+		});
+		it('continues gracefully if a thenable resolves with null', function (done) {
+			let firstThenable = sinon.stub(),
+				secondThenable = sinon.stub(),
+				data = ['John Doe', 'Jane Doe'];
+			firstThenable.onFirstCall().returns(null);
+			firstThenable.onSecondCall().returns('Birthday Party');
+			secondThenable.returns('Cheesecake');
+			let resultPromise = chainThenables([firstThenable, secondThenable], data);
+			resultPromise.then(function (result) {
+				expect(result).to.deep.equal(['Cheesecake']);
+				done();
+			});
+		});
 		it('calls the functions in the chain in the correct order', function (done) {
 			let firstThenable = sinon.stub(),
 				secondThenable = sinon.stub(),
@@ -69,6 +115,14 @@ describe('Utilities', function () {
 				done();
 			});
 		});
-		it('propagates an Error thrown by a thenable');
+		it('propagates an Error thrown by a thenable', function () {
+			let firstThenable = sinon.stub(),
+				secondThenable = sinon.stub(),
+				data = 'John Doe',
+				error = new Error('firstThenable throws an error');
+			firstThenable.throws(error);
+			return chainThenables([firstThenable, secondThenable], data)
+				.should.be.rejectedWith(error);
+		});
 	});
 });
