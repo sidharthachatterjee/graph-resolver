@@ -51,19 +51,5 @@ describe('Graph', function () {
 			expect(path).to.be.an('array');
 			expect(path).to.have.length(0);
 		});
-		it('returns undefined if no graph is passed', function () {
-			let path = getPath(undefined, 'Brand', 'Event', []);
-			expect(path).to.equal(undefined);
-		});
-		it('returns undefined if no source is passed', function () {
-			let graph = setupGraph(relationships);
-			let path = getPath(graph, undefined, 'Event', []);
-			expect(path).to.equal(undefined);
-		});
-		it('returns undefined if no destination is passed', function () {
-			let graph = setupGraph(relationships);
-			let path = getPath(graph, 'Brand', undefined, []);
-			expect(path).to.equal(undefined);
-		});
 	});
 });
