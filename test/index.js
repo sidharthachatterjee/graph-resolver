@@ -39,14 +39,17 @@ describe('Resolver', function () {
 		expect(resolver).to.have.property('graph');
 		expect(resolver.graph).to.be.an.instanceof(Graph);
 	});
+	it('throws an Error if relationship objects do not contain from, to or method');
+	it('throws an Error if relationship objects have a method that is not a thenable');
 	describe('resolve', function () {
 		it('returns a Promise that resolves to an array of values', function () {
 			let resolver = new Resolver(relationships);
 			return resolver.resolve('sample', 'Brand', 'Item').should.eventually.deep.equal(['sample']);
 		});
-		// it('rejects with an Error if not passed a source, destination or seed value');
-		// it('rejects with an Error source or destination are not strings');
-		// it('rejects with an Error if source or destination are not nodes in the graph');
+		it('returns the input wrapped in an array if source and destination are the same');
+		it('throws an Error if the source and destination are invalid nodes');
+		it('throws an Error if a relationship is not found even though source and destination are valid nodes');
+		it('throws an Error if either source, destination or value are not passed');
 	});
 });
 
@@ -81,6 +84,7 @@ describe('Utilities', function () {
 				done();
 			});
 		});
+		it('calls a function with [] if a preceding thenable resolves with undefined or null');
 		it('calls the functions in the chain in the correct order', function (done) {
 			let firstThenable = sinon.stub(),
 				secondThenable = sinon.stub(),
@@ -109,8 +113,7 @@ describe('Utilities', function () {
 				done();
 			});
 		});
-		// it('throws an Error if passed undefined or an empty array');
-		// it('throws an Error if passed array contains anything but functions');
+		it('propagates an Error thrown by a thenable');
 	});
 });
 
@@ -130,9 +133,6 @@ describe('Graph', function () {
 			expect(graph.edgeCount()).to.equal(2);
 			expect(graph.edges().map(_.ary(graph.edge, 1), graph)).to.include.members([getEventsForBrand, getItemsForEvent]);
 		});
-		// it('throws an Error if passed an empty array');
-		// it('throws an Error if passed undefined');
-		// it('throws an Error if passed null');
 	});
 	describe('getPath', function () {
 		it('returns a correctly ordered array of functions for a source and destination', function () {
