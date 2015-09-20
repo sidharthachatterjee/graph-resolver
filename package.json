@@ -21,6 +21,7 @@
   "devDependencies": {
     "babel-core": "^5.5.0",
     "chai": "^3.2.0",
+    "chai-as-promised": "^5.1.0",
     "gulp": "^3.6.0",
     "gulp-babel": "^5.1.0",
     "gulp-coveralls": "^0.1.0",
@@ -41,7 +42,6 @@
   "license": "MIT",
   "dependencies": {
     "bluebird": "^2.10.0",
-    "chai-as-promised": "^5.1.0",
     "graphlib": "^1.0.7",
     "lodash": "^3.10.1"
   }
