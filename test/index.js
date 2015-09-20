@@ -35,33 +35,48 @@ describe('Resolver', function () {
 			to: 'Item',
 			method: getItemsForEvent
 		}];
-		let wrapperResolver = () => new Resolver(erroneousRelationships);
-		wrapperResolver.should.throw(Error, 'Invalid Relationship');
+		let wrappedResolver = () => new Resolver(erroneousRelationships);
+		wrappedResolver.should.throw(Error, 'Invalid Relationship');
 	});
 	it('throws an Error if relationship objects do not contain to', function () {
 		const erroneousRelationships = [{
 			from: 'Event',
 			method: getItemsForEvent
 		}];
-		let wrapperResolver = () => new Resolver(erroneousRelationships);
-		wrapperResolver.should.throw(Error, 'Invalid Relationship');
+		let wrappedResolver = () => new Resolver(erroneousRelationships);
+		wrappedResolver.should.throw(Error, 'Invalid Relationship');
 	});
 	it('throws an Error if relationship objects do not contain method', function () {
 		const erroneousRelationships = [{
 			from: 'Event',
 			to: 'Item'
 		}];
-		let wrapperResolver = () => new Resolver(erroneousRelationships);
-		wrapperResolver.should.throw(Error, 'Invalid Relationship');
+		let wrappedResolver = () => new Resolver(erroneousRelationships);
+		wrappedResolver.should.throw(Error, 'Invalid Relationship');
 	});
 	describe('resolve', function () {
-		it('returns a Promise that resolves to an array of values', function () {
+		it('resolves to an array of values', function () {
 			let resolver = new Resolver(relationships);
 			return resolver.resolve('Sample', 'Brand', 'Item').should.eventually.deep.equal(['Sample']);
 		});
-		it('returns the input wrapped in an array if source and destination are the same');
-		it('throws an Error if the source and destination are invalid nodes');
-		it('throws an Error if a relationship is not found even though source and destination are valid nodes');
-		it('throws an Error if either source, destination or value are not passed');
+		it('resolves to the input wrapped in an array if source and destination are the same', function () {
+			let resolver = new Resolver(relationships);
+			return resolver.resolve('Sample', 'Brand', 'Brand').should.eventually.deep.equal(['Sample']);
+		});
+		it('rejects with an Error if source, destination or value are not passed in', function () {
+			let resolver = new Resolver(relationships);
+			return resolver.resolve('Sample', 'Brand')
+				.should.be.rejectedWith(Error, 'Invalid Arguments');
+		});
+		it('rejects with an Error if the source or destination are invalid nodes', function () {
+			let resolver = new Resolver(relationships);
+			return resolver.resolve('Sample', 'Tag', 'Item')
+				.should.be.rejectedWith(Error, 'Invalid Arguments');
+		});
+		it('rejects with an Error if no relationship is found', function () {
+			let resolver = new Resolver(relationships);
+			return resolver.resolve('Sample', 'Item', 'Event')
+				.should.be.rejectedWith(Error, 'Invalid Arguments');
+		});
 	});
 });
