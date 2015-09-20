@@ -30,8 +30,30 @@ describe('Resolver', function () {
 		expect(resolver).to.have.property('graph');
 		expect(resolver.graph).to.be.an.instanceof(Graph);
 	});
-	it('throws an Error if relationship objects do not contain from, to or method');
-	it('throws an Error if relationship objects have a method that is not a thenable');
+	it('throws an Error if relationship objects do not contain from', function () {
+		const erroneousRelationships = [{
+			to: 'Item',
+			method: getItemsForEvent
+		}];
+		let wrapperResolver = () => new Resolver(erroneousRelationships);
+		wrapperResolver.should.throw(Error, 'Invalid Relationship');
+	});
+	it('throws an Error if relationship objects do not contain to', function () {
+		const erroneousRelationships = [{
+			from: 'Event',
+			method: getItemsForEvent
+		}];
+		let wrapperResolver = () => new Resolver(erroneousRelationships);
+		wrapperResolver.should.throw(Error, 'Invalid Relationship');
+	});
+	it('throws an Error if relationship objects do not contain method', function () {
+		const erroneousRelationships = [{
+			from: 'Event',
+			to: 'Item'
+		}];
+		let wrapperResolver = () => new Resolver(erroneousRelationships);
+		wrapperResolver.should.throw(Error, 'Invalid Relationship');
+	});
 	describe('resolve', function () {
 		it('returns a Promise that resolves to an array of values', function () {
 			let resolver = new Resolver(relationships);
