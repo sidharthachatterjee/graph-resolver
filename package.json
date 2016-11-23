@@ -26,7 +26,7 @@
     "gulp-babel": "^5.1.0",
     "gulp-coveralls": "^0.1.0",
     "gulp-eslint": "^1.0.0",
-    "gulp-exclude-gitignore": "^1.0.0",
+    "gulp-exclude-gitignore": "^1.1.1",
     "gulp-istanbul": "^0.10.0",
     "gulp-mocha": "^2.0.0",
     "gulp-nsp": "^0.4.5",
